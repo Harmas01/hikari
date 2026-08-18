@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hikari — аниме онлайн</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#home" data-view="home"><span>H</span> HIKARI</a>
+      <nav class="main-nav"><a class="active" href="#home" data-view="home">Главная</a><a href="#catalog" data-view="catalog">Каталог</a><a href="#new">Новинки</a><a href="#popular">Популярное</a></nav>
+      <div class="header-actions"><button class="icon-button" id="searchToggle" aria-label="Поиск">⌕</button><button class="profile" aria-label="Профиль">АК</button></div>
+    </header>
+    <div class="search-overlay" id="searchOverlay"><div class="search-box"><span>⌕</span><input id="searchInput" autofocus placeholder="Название аниме..." /><kbd>ESC</kbd></div><div id="quickResults" class="quick-results"></div></div>
+
+    <main>
+      <section class="view active" id="home">
+        <section class="hero">
+          <div class="hero-backdrop"></div><div class="hero-vignette"></div>
+          <div class="hero-content"><p class="eyebrow">ВЫБОР НЕДЕЛИ</p><h1>Провожающая в последний путь Фрирен</h1><p class="hero-copy">Маг Фрирен отправляется в тихое путешествие по миру, который изменился после великого приключения.</p><div class="meta"><b>9.1</b><span>2023</span><span>16+</span><span>Фэнтези</span><span>Приключения</span></div><div class="hero-actions"><button class="primary" data-view="watch">▶ Смотреть</button><button class="secondary" data-view="anime">Подробнее</button></div></div>
+          <div class="hero-progress"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=180&q=80" alt=""><div><span>Продолжить с 08 серии · 14:32</span><div class="mini-progress"><i></i></div></div><button data-view="watch">Продолжить →</button></div>
+        </section>
+        <section class="content"><div class="section-head"><h2>Продолжить просмотр</h2><a href="#history">Вся история</a></div><div class="continue-row" id="continueRow"></div><div class="section-head"><h2>Сейчас популярно</h2><a href="#popular">Смотреть всё</a></div><div class="poster-row" id="popularRow"></div><div class="section-head"><h2>Новые серии</h2><a href="#new">Смотреть всё</a></div><div class="poster-row" id="newRow"></div><div class="section-head"><h2>Рекомендуем</h2><a href="#recommended">Смотреть всё</a></div><div class="poster-row" id="recommendRow"></div></section>
+      </section>
+
+      <section class="view" id="watch"><div class="watch-layout content"><div class="player-column"><button class="back-link" data-view="anime">← К странице аниме</button><div class="player" id="player"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=85" alt="Кадр из аниме"><div class="player-shade"></div><button class="big-play" id="playButton">▶</button><div class="player-controls"><button id="controlPlay">▶</button><span class="control-time">14:32 <i>/</i> 24:08</span><div class="timeline"><i id="timelineProgress"></i><b></b></div><button>◖</button><button class="control-label">1080p</button><button class="control-label">1×</button><button class="control-label">РУ</button><button title="Картинка в картинке">▣</button><button title="Полный экран">⛶</button></div></div><div class="episode-switch"><button>← <span>Предыдущая серия</span></button><strong>Серия <em id="currentEpisode">8</em> из 12</strong><button id="nextEpisode"><span>Следующая серия</span> →</button></div><div class="watch-title"><div><p class="eyebrow">ФРИРЕН · 1 СЕЗОН</p><h2>08. В стране смертных</h2><p><b>9.1</b> · Фэнтези, приключения</p></div><button class="favorite" id="favoriteButton">♡ В избранное</button></div></div><aside class="episodes"><div class="episodes-head"><h3>Серии</h3><span>12</span></div><div class="episode-list" id="episodeList"></div></aside></div></section>
+
+      <section class="view" id="catalog"><div class="content catalog"><div class="catalog-intro"><p class="eyebrow">БИБЛИОТЕКА</p><h1>Каталог аниме</h1><p>Находите истории, к которым хочется возвращаться.</p></div><div class="catalog-toolbar"><label class="catalog-search">⌕ <input placeholder="Поиск по каталогу" id="catalogSearch"></label><button class="filter">Жанр <span>⌄</span></button><button class="filter">Год <span>⌄</span></button><button class="filter">Статус <span>⌄</span></button><button class="filter more">Ещё фильтры +</button><button class="sort">По популярности · ⌄</button></div><div class="catalog-grid" id="catalogGrid"></div></div></section>
+
+      <section class="view" id="anime"><div class="anime-page content"><div class="anime-cover"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=85" alt="Фрирен"></div><div class="anime-info"><p class="eyebrow">ТВ-СЕРИАЛ · 2023</p><h1>Провожающая в последний путь Фрирен</h1><p class="alternative">Sousou no Frieren · 葬送のフリーレン</p><div class="meta"><b>9.1</b><span>28 серий</span><span>Онгоинг завершён</span></div><div class="tags"><span>Фэнтези</span><span>Драма</span><span>Приключения</span></div><p class="description">После победы над Королём демонов эльфийка Фрирен начинает понимать, как мало времени она уделила людям, с которыми делила путь. Это история о памяти, путешествиях и связях, которые остаются с нами.</p><div class="hero-actions"><button class="primary" data-view="watch">▶ Продолжить · 08 серия</button><button class="favorite" id="animeFavorite">♡ В избранное</button></div></div></div><div class="content detail-section"><div class="section-head"><h2>Серии</h2><a data-view="watch">К просмотру →</a></div><div class="episode-grid" id="detailEpisodes"></div><div class="section-head"><h2>Похожие аниме</h2></div><div class="poster-row" id="similarRow"></div></div></section>
+    </main>
+    <div class="toast" id="toast">Добавлено в избранное</div>
+  </div><script src="app.js"></script>
+</body></html>
