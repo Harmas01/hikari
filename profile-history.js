@@ -160,7 +160,6 @@
       currentHistory = historyFrom(activeUser);
       renderProfile();
     });
-    new MutationObserver(renderProfile).observe(document.body, { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
