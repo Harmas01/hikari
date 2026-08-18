@@ -68,7 +68,16 @@
     if (!button || button.classList.contains('muted-tab')) return;
     tabs.querySelectorAll('button').forEach((item) => item.classList.toggle('active', item === button));
     if (button.hasAttribute('data-scroll-comments')) {
-      document.querySelector('#watch .comments')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (typeof setView === 'function') setView('watch');
+      else {
+        document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === 'watch'));
+      }
+      setTimeout(() => {
+        const comments = document.querySelector('#watch .comments');
+        comments?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        comments?.classList.add('comments-highlight');
+        setTimeout(() => comments?.classList.remove('comments-highlight'), 900);
+      }, 180);
     }
   });
 
