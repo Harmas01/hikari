@@ -780,3 +780,83 @@
   style.textContent = `.poster-row,.catalog-grid,.episode-grid,.watched-list{content-visibility:auto;contain-intrinsic-size:1px 420px}img{background:#17181d}@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}`;
   document.head.append(style);
 })();
+/* email magic-link login */
+(() => {
+  const start = () => {
+    const form = document.querySelector('#authForm');
+    const title = document.querySelector('#authTitle');
+    const description = document.querySelector('#authDescription');
+    const email = document.querySelector('#authEmail');
+    const password = document.querySelector('#authPassword');
+    const submit = document.querySelector('#authSubmit');
+    const message = document.querySelector('#authError');
+    if (!form || !title || !email || !password || !submit || !message) {
+      setTimeout(start, 250);
+      return;
+    }
+
+    const passwordLabel = password.previousElementSibling;
+    const isSignin = () => title.textContent.trim() === 'Войти в Hikari';
+
+    const syncMode = () => {
+      const signin = isSignin();
+      password.hidden = signin;
+      password.disabled = signin;
+      password.required = !signin;
+      if (passwordLabel?.tagName === 'LABEL') passwordLabel.hidden = signin;
+      if (signin) {
+        description.textContent = 'Получите безопасную ссылку для входа на вашу почту.';
+        submit.textContent = 'Получить ссылку на почту';
+      }
+    };
+
+    new MutationObserver(syncMode).observe(title, { childList: true, characterData: true, subtree: true });
+    document.querySelector('#authSwitch')?.addEventListener('click', () => setTimeout(syncMode, 0));
+    syncMode();
+
+    form.addEventListener('submit', async (event) => {
+      if (!isSignin()) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const address = email.value.trim();
+      if (!address) {
+        message.textContent = 'Введите email.';
+        return;
+      }
+
+      const auth = window.authClient || (typeof authClient !== 'undefined' ? authClient : null);
+      if (!auth) {
+        message.textContent = 'Сервис авторизации ещё загружается. Попробуйте снова.';
+        return;
+      }
+
+      submit.disabled = true;
+      submit.textContent = 'Отправляем письмо…';
+      message.classList.remove('auth-email-success');
+      message.textContent = '';
+      const redirectTo = `${location.origin}${location.pathname}`;
+      const { error } = await auth.auth.signInWithOtp({
+        email: address,
+        options: { shouldCreateUser: false, emailRedirectTo: redirectTo }
+      });
+      submit.disabled = false;
+      submit.textContent = 'Отправить письмо ещё раз';
+
+      if (error) {
+        message.textContent = error.message.includes('rate') ? 'Слишком много попыток. Подождите минуту.' : 'Не удалось отправить письмо. Проверьте email.';
+        return;
+      }
+
+      message.classList.add('auth-email-success');
+      message.textContent = 'Письмо отправлено. Откройте ссылку внутри него. Проверьте папку «Спам».';
+    }, true);
+
+    const style = document.createElement('style');
+    style.textContent = `.auth-card input[hidden],.auth-card label[hidden]{display:none!important}.auth-email-success{color:#88d8ac!important;background:rgba(70,180,120,.1);border:1px solid rgba(90,200,140,.2);border-radius:8px;padding:9px 10px}`;
+    document.head.append(style);
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
