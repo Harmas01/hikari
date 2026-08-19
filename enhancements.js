@@ -860,3 +860,20 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();
 })();
+/* player coming-soon state */
+(() => {
+  const player = document.querySelector('#player');
+  if (!player || player.querySelector('.player-coming-soon')) return;
+  player.insertAdjacentHTML('beforeend', `<div class="player-coming-soon" role="status"><span>СКОРО</span><strong>Видео скоро появится</strong><small>Мы готовим серии к просмотру</small></div>`);
+  player.classList.add('is-coming-soon');
+  const playButton = document.querySelector('#playButton');
+  const controlPlay = document.querySelector('#controlPlay');
+  [playButton, controlPlay].forEach((button) => {
+    if (!button) return;
+    button.disabled = true;
+    button.setAttribute('aria-label', 'Видео скоро появится');
+  });
+  const style = document.createElement('style');
+  style.textContent = `.player.is-coming-soon .big-play{display:none}.player.is-coming-soon .player-controls{opacity:.38;pointer-events:none}.player-coming-soon{position:absolute;z-index:5;inset:0;display:grid;place-content:center;justify-items:center;text-align:center;pointer-events:none}.player-coming-soon span{margin-bottom:13px;padding:7px 11px;border:1px solid rgba(154,126,255,.35);border-radius:999px;background:rgba(120,86,232,.14);color:#cdbfff;font:700 10px Inter;letter-spacing:.16em}.player-coming-soon strong{color:#fff;font:700 clamp(20px,3vw,32px) Manrope;letter-spacing:-.03em;text-shadow:0 2px 18px #000}.player-coming-soon small{margin-top:7px;color:#aaaeb8;font:11px Inter}.player.is-coming-soon>.player-shade{background:linear-gradient(180deg,rgba(8,9,12,.18),rgba(8,9,12,.74))}`;
+  document.head.append(style);
+})();
